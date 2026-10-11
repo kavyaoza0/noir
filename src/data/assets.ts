@@ -28,11 +28,11 @@ export interface ProjectItem {
 
 export const ASSET_MANIFEST = {
   images: {
-    heroSculpture: '/src/assets/images/hero_sculpture_dark_1791569264816.jpg',
-    editorialFashion: '/src/assets/images/editorial_fashion_noir_1791569278412.jpg',
-    architecturalStudy: '/src/assets/images/architectural_light_study_1791569291165.jpg',
-    glassPrism: '/src/assets/images/glass_prism_macro_1791569316900.jpg',
-    spatialGrid: '/src/assets/images/spatial_light_grid_1791569326800.jpg',
+    heroSculpture: '/hero_sculpture_dark_1791569264816.jpg',
+    editorialFashion: '/editorial_fashion_noir_1791569278412.jpg',
+    architecturalStudy: '/architectural_light_study_1791569291165.jpg',
+    glassPrism: '/glass_prism_macro_1791569316900.jpg',
+    spatialGrid: '/spatial_light_grid_1791569326800.jpg',
   },
   videos: {
     sequenceOne: {
