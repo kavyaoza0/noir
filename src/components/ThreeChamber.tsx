@@ -20,12 +20,14 @@ export default function ThreeChamber() {
 
     const width = container.clientWidth;
     const height = container.clientHeight;
+    container.style.touchAction = 'none';
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x050505, 0.03);
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.0);
+    const aspect = width / height;
+    const camera = new THREE.PerspectiveCamera(aspect < 1 ? 56 : 45, aspect, 0.1, 100);
+    camera.position.set(0, 0, aspect < 1 ? 8.2 : 7.0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -151,7 +153,10 @@ export default function ThreeChamber() {
       if (!container) return;
       const w = container.clientWidth;
       const h = container.clientHeight;
-      camera.aspect = w / h;
+      const aspect = w / h;
+      camera.fov = aspect < 1 ? 56 : 45;
+      camera.position.z = aspect < 1 ? 8.2 : 7.0;
+      camera.aspect = aspect;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };

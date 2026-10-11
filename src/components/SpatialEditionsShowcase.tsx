@@ -22,12 +22,14 @@ export default function SpatialEditionsShowcase() {
 
     const width = mount.clientWidth;
     const height = mount.clientHeight;
+    mount.style.touchAction = 'none';
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x050505, 0.03);
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.2);
+    const aspect = width / height;
+    const camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
+    camera.position.set(0, 0, aspect < 1 ? 5.2 : 7.2);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -174,7 +176,10 @@ export default function SpatialEditionsShowcase() {
       if (!mount) return;
       const w = mount.clientWidth;
       const h = mount.clientHeight;
-      camera.aspect = w / h;
+      const aspect = w / h;
+      camera.fov = 45;
+      camera.position.z = aspect < 1 ? 5.2 : 7.2;
+      camera.aspect = aspect;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
