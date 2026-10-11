@@ -1,0 +1,6 @@
+{
+  "name": "NOIR / FORM — Experimental Creative Studio",
+  "description": "An award-winning experimental creative studio exploring cinematic digital experiences, spatial interactions, and avant-garde art direction.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
