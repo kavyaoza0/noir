@@ -44,31 +44,35 @@ export default function ThreeChamber() {
 
     // Pure Liquid Chrome Physical Material
     const material = new THREE.MeshPhysicalMaterial({
-      color: 0x1f1f26,
-      metalness: 0.98,
-      roughness: 0.08,
+      color: 0x2e3142, // Rich dark titanium chrome with visible sculptural presence
+      metalness: 0.94,
+      roughness: 0.14,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.98,
+      clearcoatRoughness: 0.06,
+      reflectivity: 0.95,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
     meshRef.current = mesh;
     scene.add(mesh);
 
-    // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    // Studio Lighting — calibrated for striking specular sheen and defined form
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.0);
     keyLight.position.set(6, 7, 5);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xd6ff38, 3.5); // Signature chartreuse rim
-    rimLight.position.set(-7, -4, -4);
+    const rimLight = new THREE.DirectionalLight(0xd6ff38, 4.8); // Signature chartreuse rim
+    rimLight.position.set(-7, -4, 3);
     scene.add(rimLight);
 
-    const softFill = new THREE.PointLight(0x818cf8, 1.8, 15);
+    const specularFill = new THREE.PointLight(0xffffff, 3.5, 18);
+    specularFill.position.set(2, 4, 4);
+    scene.add(specularFill);
+
+    const softFill = new THREE.PointLight(0x818cf8, 2.5, 15);
     softFill.position.set(0, 5, -3);
     scene.add(softFill);
 

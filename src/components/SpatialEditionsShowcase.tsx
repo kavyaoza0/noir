@@ -27,7 +27,8 @@ export default function SpatialEditionsShowcase() {
     scene.fog = new THREE.FogExp2(0x050505, 0.03);
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.2);
+    const isMobile = width < 768;
+    camera.position.set(0, 0, isMobile ? 8.2 : 7.2);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -35,9 +36,9 @@ export default function SpatialEditionsShowcase() {
       powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.45;
 
     mount.appendChild(renderer.domElement);
 
@@ -46,22 +47,22 @@ export default function SpatialEditionsShowcase() {
     scene.add(masterGroup);
     groupRef.current = masterGroup;
 
-    // Harmonic Concentric Kinetic Rings with dark chrome material
+    // Harmonic Concentric Kinetic Rings with sculpted titanium chrome material
     const ringMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1a1a24,
-      metalness: 0.98,
-      roughness: 0.1,
+      color: 0x323548, // Rich dark titanium body clearly visible on desktop while preserving specular contrast
+      metalness: 0.94,
+      roughness: 0.16,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.08,
-      reflectivity: 0.98,
+      clearcoatRoughness: 0.06,
+      reflectivity: 0.95,
     });
 
     const rings: THREE.Mesh[] = [];
     const ringCount = 4;
     for (let i = 0; i < ringCount; i++) {
       const radius = 1.25 + i * 0.42;
-      const tube = 0.048 - i * 0.005;
-      const ringGeo = new THREE.TorusGeometry(radius, Math.max(0.026, tube), 32, 100);
+      const tube = 0.072 - i * 0.007; // Well-proportioned thickness so whole ring body and specular sheen are visible
+      const ringGeo = new THREE.TorusGeometry(radius, Math.max(0.045, tube), 40, 120);
       const ring = new THREE.Mesh(ringGeo, ringMat);
       ring.rotation.x = (i * Math.PI) / 3.2;
       ring.rotation.y = (i * Math.PI) / 4.2;
@@ -69,20 +70,28 @@ export default function SpatialEditionsShowcase() {
       rings.push(ring);
     }
 
-    // Studio Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    // Studio Lighting — balanced for brilliant "lightning" specular glints and distinct ring structure
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
-    keyLight.position.set(6, 7, 5);
+    // Primary bright directional key light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 4.2);
+    keyLight.position.set(5, 7, 6);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xd6ff38, 3.8); // Electric chartreuse accent
-    rimLight.position.set(-6, -4, -3);
+    // Electric chartreuse rim light hitting the front/edge curves
+    const rimLight = new THREE.DirectionalLight(0xd6ff38, 5.2);
+    rimLight.position.set(-6, -3, 4);
     scene.add(rimLight);
 
-    const fillLight = new THREE.PointLight(0x818cf8, 1.8, 14);
-    fillLight.position.set(0, 4, -2);
+    // Specular highlight point light (creates the brilliant moving "lightning" traveling crest)
+    const specularLight = new THREE.PointLight(0xffffff, 4.5, 20);
+    specularLight.position.set(1.5, 4.5, 4.5);
+    scene.add(specularLight);
+
+    // Dimensional indigo fill light
+    const fillLight = new THREE.PointLight(0x818cf8, 2.8, 16);
+    fillLight.position.set(0, -4, -3);
     scene.add(fillLight);
 
     // Pointer Interaction (Smooth drag)
@@ -175,6 +184,7 @@ export default function SpatialEditionsShowcase() {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
       camera.aspect = w / h;
+      camera.position.z = w < 768 ? 8.2 : 7.2;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     };
